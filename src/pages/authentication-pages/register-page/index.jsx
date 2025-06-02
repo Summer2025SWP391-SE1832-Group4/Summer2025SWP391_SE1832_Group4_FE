@@ -1,11 +1,24 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './index.scss';
 import { Form, Input } from 'antd';
+import { toast } from 'react-toastify';
+import { register } from '../../../apis/authenticationApi/registerApi';
 
 const Register = () => {
-  const onFinish = (values) => {
-    console.log('Form values:', values);
-    // Call registration API here
+
+   const navigate = useNavigate();
+
+  const onFinish = async(values) => {
+    try {
+       const valuesWithDefaultId ={roleId:5,...values }
+       const response = await register(valuesWithDefaultId)
+       toast.success(response.data.message)
+       navigate("/login-page")
+    } catch (error) {
+      toast.error(error.response.data.message)
+    } 
+
+    
   };
 
   return (
@@ -14,7 +27,23 @@ const Register = () => {
         <h2 className="register-title">Register</h2>
         <span className="register-subtitle">Create a new account</span>
 
+
+
+
+
         <Form layout="vertical" className="register-form" onFinish={onFinish}>
+           
+           <Form.Item
+            label="Username"
+            name="username"
+            rules={[
+              { required: true, message: 'Please enter your username!' },
+              { type: 'username', message: 'Invalid username format!' },
+            ]}
+          >
+            <Input placeholder="Enter your username" />
+          </Form.Item>
+         
           <Form.Item
             label="Email"
             name="email"
@@ -26,32 +55,34 @@ const Register = () => {
             <Input placeholder="Enter your email" />
           </Form.Item>
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: 'Please enter your password!' }]}
+
+           <Form.Item
+            label="Fullname"
+            name="fullName"
+            rules={[
+              { required: true, message: 'Please enter your fullname!' },
+              { type: 'fullname', message: 'Invalid fullname format!' },
+            ]}
           >
-            <Input.Password placeholder="Enter your password" />
+            <Input placeholder="Enter your fullname" />
           </Form.Item>
 
           <Form.Item
-            label="Confirm Password"
-            name="confirm"
-            dependencies={['password']}
+            label="PhoneNumber"
+            name="phoneNumber"
             rules={[
-              { required: true, message: 'Please confirm your password!' },
-              ({ getFieldValue }) => ({
-                validator(_, value) {
-                  if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                  }
-                  return Promise.reject(new Error('Passwords do not match!'));
-                },
-              }),
+              { required: true, message: 'Please enter your phoneNumber!' },
+              { type: 'phoneNumber', message: 'Invalid phoneNumber format!' },
             ]}
           >
-            <Input.Password placeholder="Confirm your password" />
+            <Input placeholder="Enter your phoneNumber" />
           </Form.Item>
+
+
+
+
+        
+         
 
           <Form.Item>
             <button  className="register-btn">
