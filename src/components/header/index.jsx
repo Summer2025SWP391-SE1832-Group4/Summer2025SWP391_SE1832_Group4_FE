@@ -26,9 +26,11 @@ const Header = () => {
   }, [isWhiteBackgroundPage]);
 
   const menuItemsHeader = [
+    { label: "Home", path: endPoint.HOME },
     { label: "Blogs", path: endPoint.BLOGSPAGE },
     { label: "Book an appointment", path: endPoint.BOOKINGAPPOINTMENT },
     { label: "Service", path: endPoint.BOOKINGAPPOINTMENT },
+    
   ];
 
   const handleNavigate = (path) => {
