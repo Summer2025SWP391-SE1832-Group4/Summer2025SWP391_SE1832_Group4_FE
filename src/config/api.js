@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "",
+  baseURL: "https://hivtreatmentsystem.uc.r.appspot.com/api/",
   headers: {
     "Content-Type": "application/json",
   },
