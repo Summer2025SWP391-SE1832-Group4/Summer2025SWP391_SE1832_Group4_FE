@@ -30,16 +30,16 @@ const Header = () => {
     { label: "Blogs", path: endPoint.BLOGSPAGE },
     { label: "Book an appointment", path: endPoint.BOOKINGAPPOINTMENT },
     { label: "Service", path: endPoint.BOOKINGAPPOINTMENT },
-    
   ];
 
   const handleNavigate = (path) => {
     navigate(path);
   };
 
-  const headerClasses = isWhiteBackgroundPage || scrolled
-    ? "bg-white text-black shadow-md"
-    : "bg-white/15 text-white backdrop-blur";
+  const headerClasses =
+    isWhiteBackgroundPage || scrolled
+      ? "bg-white text-black shadow-md"
+      : "bg-white/15 text-white backdrop-blur";
 
   return (
     <header
@@ -55,7 +55,7 @@ const Header = () => {
           width={70}
           preview={false}
         />
-        <h1 className="text-xl font-bold font-mono hidden sm:block">
+        <h1 className="text-xl font-bold font-extrabold hidden sm:block bg-gradient-to-r from-red-500 via-yellow-400 to-green-500 bg-clip-text text-transparent">
           HIV TREATMENT
         </h1>
       </div>
