@@ -11,6 +11,7 @@ import ForgotPasswordPage from "./pages/authentication-pages/forgotPassword-page
 import endPoint from "./routers/router";
 import BookingAppointment from "./pages/booking-appointment-pages";
 import BlogsPages from "./pages/blogs-pages";
+import SetUpPasswordAfterRegister from "./pages/authentication-pages/setup-passwordAfterRegister-page";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const App = () => {
     {
       path: endPoint.REGISTER,
       element: <Register />,
+    },
+    {
+      path: endPoint.PASSWORDAFTERREGISTER,
+      element: <SetUpPasswordAfterRegister/>,
     },
     {
       path: endPoint.FORGOTPASSWORD,
