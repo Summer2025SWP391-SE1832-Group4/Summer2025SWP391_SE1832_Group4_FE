@@ -11,9 +11,9 @@ const Header = () => {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
 
-  // Kiểm tra đăng nhập qua accessToken
+  // Kiểm tra đăng nhập qua token
   const [isLoggedIn, setIsLoggedIn] = useState(
-    !!localStorage.getItem("accessToken")
+    !!localStorage.getItem("token")
   );
 
   const isWhiteBackgroundPage = location.pathname === "/booking-appointment";
@@ -33,7 +33,7 @@ const Header = () => {
   // Lắng nghe localStorage để cập nhật trạng thái login
   useEffect(() => {
     const handleStorage = () => {
-      setIsLoggedIn(!!localStorage.getItem("accessToken"));
+      setIsLoggedIn(!!localStorage.getItem("token"));
     };
     window.addEventListener("storage", handleStorage);
     return () => {
@@ -59,7 +59,7 @@ const Header = () => {
     } catch (e) {
       // Có thể ignore lỗi này nếu muốn user logout local luôn
     }
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     
     setIsLoggedIn(false);

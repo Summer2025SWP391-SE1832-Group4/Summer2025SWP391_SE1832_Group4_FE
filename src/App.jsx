@@ -12,6 +12,8 @@ import endPoint from "./routers/router";
 import BookingAppointment from "./pages/booking-appointment-pages";
 import BlogsPages from "./pages/blogs-pages";
 import SetUpPasswordAfterRegister from "./pages/authentication-pages/setup-passwordAfterRegister-page";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const router = createBrowserRouter([
@@ -23,7 +25,7 @@ const App = () => {
           path: endPoint.HOME,
           element: <HomePage />,
         },
-          {
+        {
           path: endPoint.BOOKINGAPPOINTMENT,
           element: <BookingAppointment />,
         },
@@ -31,7 +33,6 @@ const App = () => {
           path: endPoint.BLOGSPAGE,
           element: <BlogsPages />,
         },
-
       ],
     },
     {
@@ -72,6 +73,7 @@ const App = () => {
   return (
     <div>
       <RouterProvider router={router} />
+      <ToastContainer />
     </div>
   );
 };

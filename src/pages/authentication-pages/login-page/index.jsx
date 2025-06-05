@@ -19,7 +19,7 @@ const Login = () => {
         password: values.password,
       })
       if (response && response.data && response.data.token) {
-        localStorage.setItem("accessToken", response.data.token)
+        localStorage.setItem("token", response.data.token)
         toast.success("Đăng nhập thành công!")
         navigate("/")
       } else {
