@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://hivtreatmentsystem.uc.r.appspot.com/api/",
+  baseURL: import.meta.env.VITE_BACKEND_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -12,10 +12,10 @@ const api = axios.create({
 // Trước khi gọi API, thêm token vào headers
 api.interceptors.request.use(function (config) {
   // Do something before request is sent
-  const token = localStorage.getItem("token")
-  if(token){
-      config.headers.Authorization = `Bearer ${token}`
-  }
+  const token = localStorage.getItem("accessToken")
+if(token){
+    config.headers.Authorization = `Bearer ${token}`
+}
   
   return config;
 }, function (error) {

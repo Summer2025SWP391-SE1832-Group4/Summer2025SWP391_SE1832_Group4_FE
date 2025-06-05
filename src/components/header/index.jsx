@@ -4,11 +4,17 @@ import "./index.scss";
 import logo from "../../assets/images/logo.png";
 import { useLocation, useNavigate } from "react-router-dom";
 import endPoint from "../../routers/router";
+import { logout } from "../../apis/authenticationApi/loginApi";
 
 const Header = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
+
+  // Kiểm tra đăng nhập qua accessToken
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("accessToken")
+  );
 
   const isWhiteBackgroundPage = location.pathname === "/booking-appointment";
 
@@ -19,11 +25,21 @@ const Header = () => {
     if (!isWhiteBackgroundPage) {
       window.addEventListener("scroll", handleScroll);
     }
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, [isWhiteBackgroundPage]);
+
+  // Lắng nghe localStorage để cập nhật trạng thái login
+  useEffect(() => {
+    const handleStorage = () => {
+      setIsLoggedIn(!!localStorage.getItem("accessToken"));
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+    };
+  }, []);
 
   const menuItemsHeader = [
     { label: "Home", path: endPoint.HOME },
@@ -34,6 +50,21 @@ const Header = () => {
 
   const handleNavigate = (path) => {
     navigate(path);
+  };
+
+  // Hàm logout hoàn chỉnh
+  const handleLogout = async () => {
+    try {
+      await logout(); // Gọi API logout phía backend
+    } catch (e) {
+      // Có thể ignore lỗi này nếu muốn user logout local luôn
+    }
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    
+    setIsLoggedIn(false);
+    navigate("/login-page");
+    window.location.reload(); // Đảm bảo cập nhật lại header và trạng thái
   };
 
   const headerClasses =
@@ -81,21 +112,39 @@ const Header = () => {
           <span className="font-medium font-mono">Act Today</span>
           <span className="text-sm font-mono">For a Future without HIV</span>
         </div>
-        <div className="flex space-x-1.5 cursor-pointer bg-[#e1e1e1] text-[#000] py-2 px-1 rounded-[5px]">
-          <p
-            onClick={() => navigate("/login-page")}
-            className="font-mono font-bold hover:underline"
-          >
-            Login
-          </p>
-          <span>/</span>
-          <p
-            onClick={() => navigate("/register-page")}
-            className="font-mono font-bold hover:underline"
-          >
-            Register
-          </p>
-        </div>
+        {isLoggedIn ? (
+          <div className="flex space-x-1.5 items-center bg-[#e1e1e1] text-[#000] py-2 px-2 rounded-[5px]">
+            <p
+              onClick={() => navigate("/profile")}
+              className="font-mono font-bold hover:underline cursor-pointer"
+            >
+              Profile
+            </p>
+            <span>|</span>
+            <p
+              onClick={handleLogout}
+              className="font-mono font-bold text-red-500 hover:underline cursor-pointer"
+            >
+              Logout
+            </p>
+          </div>
+        ) : (
+          <div className="flex space-x-1.5 cursor-pointer bg-[#e1e1e1] text-[#000] py-2 px-1 rounded-[5px]">
+            <p
+              onClick={() => navigate("/login-page")}
+              className="font-mono font-bold hover:underline"
+            >
+              Login
+            </p>
+            <span>/</span>
+            <p
+              onClick={() => navigate("/register-page")}
+              className="font-mono font-bold hover:underline"
+            >
+              Register
+            </p>
+          </div>
+        )}
       </div>
     </header>
   );
